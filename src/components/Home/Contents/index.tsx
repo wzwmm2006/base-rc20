@@ -95,9 +95,21 @@ export default class Contents extends Component {
   }
 
   preSale = async () => {
-    // get proof 
-    dudu.methods
-      .claim(/*proof, referrer*/)
+    // get proof
+    const address = "124";
+    try {
+      const response = await fetch('http://154.39.81.22:8080/api/proof?address='+address);
+      const data = await response.json();
+      if (data.code != 200){
+        message.error(data.message)
+        return
+      }
+      console.debug(data);
+    }catch (err) {
+      return
+    }
+
+    dudu.methods.claim(/*proof, referrer*/)
       .send(
         { from: this.state.connectId, value: web3.utils.toWei("0.00", "ether") }
       ).then((res: object) => { }).catch((err: any) => {
